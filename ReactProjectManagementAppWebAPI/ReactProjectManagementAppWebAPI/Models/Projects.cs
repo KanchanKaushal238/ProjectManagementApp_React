@@ -1,21 +1,16 @@
-﻿
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using ReactProjectManagementAppWebAPI.Context;
+using ReactProjectManagementAppWebAPI.Service;
 
 namespace ReactProjectManagementAppWebAPI.Models
 {
-    public class Projects
+    [BsonCollection("Projects")]
+    public class Projects : Document
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        [BsonRequired]
         public string title { get; set; }
-        public string description { get; set; }
-        public string dueDate { get; set; }
+        public string description { get; set; } = string.Empty;
+        public string dueDate { get; set; } = string.Empty;
     }
 
 }

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ReactProjectManagementAppWebAPI
 {
@@ -32,7 +33,8 @@ namespace ReactProjectManagementAppWebAPI
             //services.Configure<ReactMongoDbModel>(Configuration.GetSection("ReactMongoDatabase:ConnectionString"));
             services.AddSingleton<IReactDbModel>(x => new ReactMongoDbModel()
             {
-                ConnectionString = Configuration.GetSection("ReactMongoDatabase:ConnectionString").Value
+                ConnectionString = Configuration.GetSection("ReactMongoDatabase:ConnectionString").Value,
+                DatabaseName = Configuration.GetSection("ReactMongoDatabase:DatabaseName").Value
             });
             //services.AddDbContext<AddDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings:DbCon")));
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
@@ -43,7 +45,7 @@ namespace ReactProjectManagementAppWebAPI
             }));
 
             services.AddControllers();
-            
+            services.AddTransient<IHomeService, HomeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

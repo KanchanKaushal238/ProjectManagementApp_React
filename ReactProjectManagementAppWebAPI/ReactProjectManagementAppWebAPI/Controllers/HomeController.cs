@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ReactProjectManagementAppWebAPI.Models;
-using System;
+using ReactProjectManagementAppWebAPI.Service;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,6 +13,15 @@ namespace ReactProjectManagementAppWebAPI.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+        private readonly IHomeService _homeService;
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(IHomeService homeService, ILogger<HomeController> logger)
+        {
+            _homeService = homeService;
+            _logger = logger;
+        }
+
         // GET: api/<HomeController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -28,15 +37,22 @@ namespace ReactProjectManagementAppWebAPI.Controllers
         }
 
         // POST api/<HomeController>
-        [HttpPost]
-        public object Post([FromBody] CreateProject projectDetails)
+        [HttpPost("SaveProject")]
+        public async Task<object> SaveProject([FromBody] ProjectDTO projectDetails)
         {
-            return new
+            //return new
+            //{
+            //    title = projectDetails.title,
+            //    description = projectDetails.description,
+            //    dueDate = projectDetails.dueDate
+            //};
+            Projects project = new Projects()
             {
                 title = projectDetails.title,
                 description = projectDetails.description,
                 dueDate = projectDetails.dueDate
             };
+            return await _homeService.Post(project);
         }
 
         // PUT api/<HomeController>/5

@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ProjectManagementAPI/.vs/ProjectManagementAPI
+/ProjectManagementAPI/ProjectManagementAPI/obj
+/ProjectManagementApp/node_modules
+/ReactProjectManagementAppWebAPI/.vs/ReactProjectManagementAppWebAPI
+/ReactProjectManagementAppWebAPI/ReactProjectManagementAppWebAPI/bin/*
+/ReactProjectManagementAppWebAPI/ReactProjectManagementAppWebAPI/obj/*
+/ReactProjectManagementAppWebAPI/.vs/ProjectEvaluation
