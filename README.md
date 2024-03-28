@@ -1,1 +1,1 @@
-This is a project management tool 👍😢
+This is a project management tool 👍
