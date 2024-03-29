@@ -30,22 +30,16 @@ namespace ReactProjectManagementAppWebAPI.Controllers
         }
 
         // GET api/<HomeController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetAllProjects")]
+        public async Task<object> GetAllProjects()
         {
-            return "value";
+            return await _homeService.GetAllProject();
         }
 
         // POST api/<HomeController>
         [HttpPost("SaveProject")]
         public async Task<object> SaveProject([FromBody] ProjectDTO projectDetails)
         {
-            //return new
-            //{
-            //    title = projectDetails.title,
-            //    description = projectDetails.description,
-            //    dueDate = projectDetails.dueDate
-            //};
             Projects project = new Projects()
             {
                 title = projectDetails.title,

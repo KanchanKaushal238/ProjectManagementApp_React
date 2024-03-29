@@ -18,13 +18,27 @@ namespace ReactProjectManagementAppWebAPI.Service
             mongoProjects = Factory<Projects>.getInstance(dbSettings);
         }
 
+
+        public async Task<object> GetAllProject()
+        {
+            var projects = await mongoProjects.GetAllAsync();
+            return CommonUtil.GetContentResult(projects, Convert.ToInt32(HttpStatusCode.BadRequest)); ;
+        }
+
         public async Task<object> Post(Projects project)
         {
-            if (project == null)
-                return CommonUtil.GetContentResult(JsonConvert.SerializeObject(""), Convert.ToInt32(HttpStatusCode.BadRequest));
+            try
+            {
+                if (project == null)
+                    return CommonUtil.GetContentResult(JsonConvert.SerializeObject(""), Convert.ToInt32(HttpStatusCode.BadRequest));
 
-            var addedProject = await mongoProjects.InsertAsync(project);
-            return CommonUtil.GetContentResult(JsonConvert.SerializeObject(addedProject), Convert.ToInt32(HttpStatusCode.BadRequest)); ;
+                var addedProject = await mongoProjects.InsertAsync(project);
+                return CommonUtil.GetContentResult(addedProject, Convert.ToInt32(HttpStatusCode.BadRequest)); ;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

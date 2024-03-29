@@ -5,6 +5,7 @@ namespace ReactProjectManagementAppWebAPI.Service
 {
     public interface IHomeService
     {
+        Task<object> GetAllProject();
         Task<object> Post(Projects project);
     }
 }
