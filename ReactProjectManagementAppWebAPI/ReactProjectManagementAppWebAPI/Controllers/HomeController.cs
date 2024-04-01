@@ -67,7 +67,8 @@ namespace ReactProjectManagementAppWebAPI.Controllers
             {
                 title = projectDetails.title,
                 description = projectDetails.description,
-                dueDate = projectDetails.dueDate
+                dueDate = projectDetails.dueDate,
+                projTasks = projectDetails.projTasks
             });
         }
 

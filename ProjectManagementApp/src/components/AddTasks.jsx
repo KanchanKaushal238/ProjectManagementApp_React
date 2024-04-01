@@ -2,16 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { projectCreationActions } from "../store";
 import { Fragment } from "react";
 
-export default function AddTasks({title}){
+export default function AddTasks({id}){
     
     const projectDetails = useSelector((state) => state.projectHandle.projectArrayItems);
 
-    const findProject = [...projectDetails.filter(x=> x.title === title)];
-
+    const findProject = [...projectDetails.filter(x=> x.id === id)];
+    
     const dispatch = useDispatch();
 
     function handleClear(task){
-        dispatch(projectCreationActions.clearTasks({title, task}));
+        dispatch(projectCreationActions.clearTasks({id, task}));
     }
 
     return (

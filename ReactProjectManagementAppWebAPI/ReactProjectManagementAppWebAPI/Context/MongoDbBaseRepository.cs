@@ -240,6 +240,9 @@ namespace ReactProjectManagementAppWebAPI.Context
         {
             entity.modifiedBy = userId;
             entity.modifiedAt = DateTime.UtcNow;
+            var oldCollection = collection.Find(filter).First();
+            entity.createdBy = oldCollection.createdBy;
+            entity.Id = oldCollection.Id;
             await collection.FindOneAndReplaceAsync(filter, entity, null, ct);
             return true;
         }
