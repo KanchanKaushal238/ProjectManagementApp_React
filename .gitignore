@@ -6,6 +6,6 @@
 /ProjectManagementAPI/ProjectManagementAPI/obj
 /ProjectManagementApp/node_modules
 /ReactProjectManagementAppWebAPI/.vs/ReactProjectManagementAppWebAPI
-ReactProjectManagementAppWebAPI/ReactProjectManagementAppWebAPI/bin/*
-ReactProjectManagementAppWebAPI/ReactProjectManagementAppWebAPI/obj/*
+/ReactProjectManagementAppWebAPI/ReactProjectManagementAppWebAPI/bin/Debug/netcoreapp3.1/
+/ReactProjectManagementAppWebAPI/ReactProjectManagementAppWebAPI/obj/Debug/netcoreapp3.1/
 /ReactProjectManagementAppWebAPI/.vs/ProjectEvaluation
