@@ -7,5 +7,7 @@ namespace ReactProjectManagementAppWebAPI.Service
     {
         Task<object> GetAllProject();
         Task<object> Post(Projects project);
+        Task<object> UpdateProject(string projectId, Projects project);
+        Task<object> DeleteProject(string projectId);
     }
 }

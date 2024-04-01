@@ -26,7 +26,6 @@ namespace ReactProjectManagementAppWebAPI.Context
         /// <param name="settings">DB setting object</param>
         public MongoDbBaseRepository(IMongoDatabase database, string userId = "")
         {
-            ///var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
             collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
         }
 
@@ -223,25 +222,10 @@ namespace ReactProjectManagementAppWebAPI.Context
                     p.modifiedAt = DateTime.UtcNow;
                 });
 
-            // var updates = new List<WriteModel<TDocument>>();
-
             foreach (var doc in document)
             {
                 await UpdateByIdAsync(doc, doc.Id);
-                // updates.Add(new ReplaceOneModel<TDocument>(doc.Id, doc));
-                //var upsertOne = new ReplaceOneModel<TDocument>(doc.Id, doc)
-                //{ IsUpsert = true };
-                //updates.Add(upsertOne);
             }
-            //try
-            //{
-            //    await collection.BulkWriteAsync(updates);
-
-            //}
-            //catch (Exception ex)
-            //{
-
-            //}
             return true;
         }
 

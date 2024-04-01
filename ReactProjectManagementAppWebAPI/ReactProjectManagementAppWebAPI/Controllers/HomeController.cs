@@ -22,21 +22,28 @@ namespace ReactProjectManagementAppWebAPI.Controllers
             _logger = logger;
         }
 
-        // GET: api/<HomeController>
+
+        /// <summary>Tests the connection.</summary>
+        /// <returns>Enumerable of Strings</returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<string> TestConnection()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "Kanchan", "Kausal" };
         }
 
-        // GET api/<HomeController>/5
+
+        /// <summary>Gets all projects.</summary>
+        /// <returns>All Projects</returns>
         [HttpGet("GetAllProjects")]
         public async Task<object> GetAllProjects()
         {
             return await _homeService.GetAllProject();
         }
 
-        // POST api/<HomeController>
+
+        /// <summary>Saves the project.</summary>
+        /// <param name="projectDetails">The project details.</param>
+        /// <returns>If Project is saved [true] else [false]</returns>
         [HttpPost("SaveProject")]
         public async Task<object> SaveProject([FromBody] ProjectDTO projectDetails)
         {
@@ -49,16 +56,28 @@ namespace ReactProjectManagementAppWebAPI.Controllers
             return await _homeService.Post(project);
         }
 
-        // PUT api/<HomeController>/5
+
+        /// <summary>Puts the specified identifier.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="value">The value.</param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<object> UpdateProject(string id, [FromBody] ProjectDTO projectDetails)
         {
+            return await _homeService.UpdateProject(id, new Projects()
+            {
+                title = projectDetails.title,
+                description = projectDetails.description,
+                dueDate = projectDetails.dueDate
+            });
         }
 
-        // DELETE api/<HomeController>/5
+
+        /// <summary>Deletes the specified identifier.</summary>
+        /// <param name="id">The identifier.</param>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<object> DeleteProject(string id)
         {
+            return await _homeService.DeleteProject(id);
         }
     }
 }
