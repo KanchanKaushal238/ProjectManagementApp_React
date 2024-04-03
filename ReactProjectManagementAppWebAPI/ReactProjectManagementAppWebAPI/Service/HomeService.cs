@@ -25,7 +25,7 @@ namespace ReactProjectManagementAppWebAPI.Service
         public async Task<object> GetAllProject()
         {
             var projects = await mongoProjects.GetAllAsync();
-            return CommonUtil.GetContentResult(projects, Convert.ToInt32(HttpStatusCode.BadRequest)); ;
+            return CommonUtil.GetContentResult(projects, Convert.ToInt32(HttpStatusCode.OK)); ;
         }
 
         /// <summary>Saves the project.</summary>
@@ -39,7 +39,7 @@ namespace ReactProjectManagementAppWebAPI.Service
                     return CommonUtil.GetContentResult(JsonConvert.SerializeObject(""), Convert.ToInt32(HttpStatusCode.BadRequest));
 
                 var addedProject = await mongoProjects.InsertAsync(project);
-                return CommonUtil.GetContentResult(addedProject, Convert.ToInt32(HttpStatusCode.BadRequest)); ;
+                return CommonUtil.GetContentResult(addedProject, Convert.ToInt32(HttpStatusCode.OK)); ;
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace ReactProjectManagementAppWebAPI.Service
                     project.dueDate = projects.dueDate;
                     var projectUpdated = await mongoProjects.UpdateByIdAsync(projects, projectId);
 
-                    return CommonUtil.GetContentResult(projectUpdated, Convert.ToInt32(HttpStatusCode.BadRequest));
+                    return CommonUtil.GetContentResult(projectUpdated, Convert.ToInt32(HttpStatusCode.OK));
                 }
             }
             catch (Exception ex)
@@ -91,7 +91,7 @@ namespace ReactProjectManagementAppWebAPI.Service
                 else
                 {
                     var projectDeleted = await mongoProjects.DeleteByIdAsync(projectId);
-                    return CommonUtil.GetContentResult(projectDeleted, Convert.ToInt32(HttpStatusCode.BadRequest));
+                    return CommonUtil.GetContentResult(projectDeleted, Convert.ToInt32(HttpStatusCode.OK));
                 }
             }
             catch (Exception ex)

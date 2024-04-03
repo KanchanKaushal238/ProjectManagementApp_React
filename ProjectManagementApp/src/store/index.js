@@ -1,13 +1,17 @@
 import {
-  combineReducers,
   configureStore,
+  combineReducers,
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
+// import { routerMiddleware } from "react-router-redux";
 import { toast } from "react-toastify";
-import { createStore } from "redux";
+import {thunk} from 'redux-thunk';
+import { connectRoutes } from 'redux-first-router';
+import { connectRouter, routerMiddleware } from "connected-react-router";
+import { createBrowserHistory } from "history";
 
-// import { reducer as formReducer } from "redux-form";
+// import { reducer   as formReducer } from "redux-form";
 
 // function for post request
 export const addProjectsAPI = createAsyncThunk(
@@ -41,14 +45,14 @@ export const addProjectsAPI = createAsyncThunk(
 // function for post request
 export const addTasksAPI = createAsyncThunk(
   "NewProject/addTasksAPI",
-  async ({ projectDetailsDel, id, tasks }) => {
+  async ({ projectDetails, id, tasks }) => {
     const sendRequest = async () => {
-      const projectDetailsForTask = JSON.parse(JSON.stringify(projectDetailsDel.filter(x => x.id === id)));
+      const projectDetailsForTask = JSON.parse(JSON.stringify(projectDetails.filter(x => x.id === id)));
 
       projectDetailsForTask[0].projTasks.push(tasks);
 
       const response = await fetch(
-        "https://localhost:44386/api/Home/AddTask",
+        `https://localhost:44386/api/Home/UpdateProject/${id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -58,6 +62,97 @@ export const addTasksAPI = createAsyncThunk(
 
       if (!response.ok) {
         console.log("task not added");
+      }
+      const res = await response.json();
+      return res;
+    };
+    try {
+      const resp = await sendRequest();
+      return resp;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const clearTasksAPI = createAsyncThunk(
+  "NewProject/clearTasksAPI",
+  async ({ projectDetailsForTask, id, task }) => {
+    const sendRequest = async () => {
+
+      const updatedArr = JSON.parse(JSON.stringify(projectDetailsForTask));
+      const newProjArr = updatedArr[0].projTasks.filter(
+        (x) => x !== task
+      );
+
+      updatedArr[0].projTasks = newProjArr;
+      
+      const response = await fetch(
+        `https://localhost:44386/api/Home/UpdateProject/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedArr[0]),
+        }
+      );
+
+      if (!response.ok) {
+        console.log("task not added");
+      }
+      const res = await response.json();
+      return res;
+    };
+    try {
+      const resp = await sendRequest();
+      return resp;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+// function for post request
+export const getProjectsAPI = createAsyncThunk(
+  "NewProject/getProjectsAPI",
+  async () => {
+    const sendRequest = async () => {
+
+      const response = await fetch(
+        "https://localhost:44386/api/Home/GetAllProjects",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!response.ok) {
+        
+      }
+      const res = await response.json();
+      return res;
+    };
+    try {
+      const resp = await sendRequest();
+      return resp;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const deleteProjectsAPI = createAsyncThunk(
+  "NewProject/deleteProjectsAPI",
+  async ({id}) => {
+    const sendRequest = async () => {
+
+      const response = await fetch(
+        `https://localhost:44386/api/Home/DeleteProject/${id}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      if (!response.ok) {
+        
       }
       const res = await response.json();
       return res;
@@ -146,7 +241,7 @@ const newProjectSlice = createSlice({
     },
     getProjectList(state, actions)
     {
-      if(actions.payload.projectList.length === 0)
+      if(state.projectArrayItems.length === 0)
       {
         state.isNewProj = false,
         state.isOpenProj= false;
@@ -163,17 +258,17 @@ const newProjectSlice = createSlice({
     //   state.isNewProj = true;
     //   state.isOpenProj = true;
     // },
-    clearTasks(state, actions) {
-      const updatedArr = state.projectArrayItems.filter(
-        (x) => x.id === actions.payload.id
-      );
-      const newProjArr = updatedArr[0].projTasks.filter(
-        (x) => x !== actions.payload.task
-      );
-      updatedArr[0].projTasks = newProjArr;
-      state.isNewProj = true;
-      state.isOpenProj = true;
-    },
+    // clearTasks(state, actions) {
+    //   const updatedArr = state.projectArrayItems.filter(
+    //     (x) => x.id === actions.payload.id
+    //   );
+    //   const newProjArr = updatedArr[0].projTasks.filter(
+    //     (x) => x !== actions.payload.task
+    //   );
+    //   updatedArr[0].projTasks = newProjArr;
+    //   state.isNewProj = true;
+    //   state.isOpenProj = true;
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -182,9 +277,10 @@ const newProjectSlice = createSlice({
         state.isSuccess = false;
       })
       .addCase(addProjectsAPI.fulfilled, (state, action) => {
+        if (action.payload !== undefined && action.payload === true) {
+
         const updatedForm = [...state.projectArrayItems];
         updatedForm.push({
-          id: updatedForm.length + 1,
           title: action.meta.arg.formData.title,
           description: action.meta.arg.formData.description,
           dueDate: action.meta.arg.formData.dueDate,
@@ -193,7 +289,7 @@ const newProjectSlice = createSlice({
 
         state.projectArrayItems = updatedForm;
 
-        if (action.payload !== undefined && action.payload === true) {
+        
           state.isSuccess = true;
         } else {
           state.isSuccess = false;
@@ -222,17 +318,89 @@ const newProjectSlice = createSlice({
       .addCase(addTasksAPI.rejected, (state) => {
         state.error = true;
         state.isSuccess = false;
-      });
+      })
+
+      .addCase(getProjectsAPI.pending, (state) => {
+        
+      })
+      .addCase(getProjectsAPI.fulfilled, (state, actions) => {
+        if (actions.payload !== undefined) 
+        {
+          actions.payload.map((project) => {
+            state.projectArrayItems.push(project);
+          })
+        }
+      })
+      .addCase(getProjectsAPI.rejected, (state) => {
+        state.error = true;
+        state.isSuccess = false;
+      })
+
+      .addCase(clearTasksAPI.pending, (state) => {
+        
+      })
+      .addCase(clearTasksAPI.fulfilled, (state, actions) => {
+          
+          const updatedArr = state.projectArrayItems.filter(
+            (x) => x.id === actions.meta.arg.id
+          );
+          const newProjArr = updatedArr[0].projTasks.filter(
+            (x) => x !== actions.meta.arg.task
+          );
+          updatedArr[0].projTasks = newProjArr;
+          state.isNewProj = true;
+          state.isOpenProj = true;
+        //}
+      })
+      .addCase(clearTasksAPI.rejected, (state) => {
+        state.error = true;
+        state.isSuccess = false;
+      })
+
+      .addCase(deleteProjectsAPI.pending, (state) => {
+        
+      })
+      .addCase(deleteProjectsAPI.fulfilled, (state, actions) => {
+          
+        state.projectArrayItems = state.projectArrayItems.filter((x) => x.id !== actions.meta.arg.id);
+        state.isOpenProj = false;
+        state.isNewProj = false;
+        state.isSuccess = false;
+        state.openProjectList = false;
+        //}
+      })
+      .addCase(deleteProjectsAPI.rejected, (state) => {
+        state.error = true;
+        state.isSuccess = false;
+      })
+    
   },
 });
 
+
+
+
+export const history = createBrowserHistory();
+
+const createRootReducer = () => ({
+  projectHandle: newProjectSlice.reducer,
+  router: connectRouter(history)
+})
+const preloadedState = {};
+export const store = configureStore({
+  middleware : (getDefaultMiddleware) =>
+  getDefaultMiddleware().concat(routerMiddleware(history)),
+  reducer: createRootReducer(history),
+  preloadedState
+})
+
 // 1. create store
-const store = configureStore({
-  reducer: {
-    projectHandle: newProjectSlice.reducer,
-  },
-});
+// const store =  configureStore({
+//   reducer : {
+//     projectHandle: newProjectSlice.reducer,
+//   }
+// });
 
 export const projectCreationActions = newProjectSlice.actions;
 
-export default store;
+// export default store;

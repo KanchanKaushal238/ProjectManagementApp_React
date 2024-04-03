@@ -1,20 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import AddTasks from "./AddTasks";
 import { useState } from "react";
-import { addTasksAPI, projectCreationActions } from "../store";
+import { addTasksAPI, deleteProjectsAPI, projectCreationActions } from "../store";
+import { useNavigate } from "react-router";
+
 
 export default function OpenProject() {
   const [tasks, setTasks] = useState("");
-  const projectDetailsDel = useSelector(
+  const projectDetails = useSelector(
     (state) => state.projectHandle.projectArrayItems
   );
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   function handleDeleteProject(event, id) {
     event.preventDefault();
-    const updatedArr = [...projectDetailsDel.filter((x) => x.id !== id)];
-    dispatch(projectCreationActions.deleteProjectDetails({ updatedArr }));
+    dispatch(deleteProjectsAPI({ id }));
+
+    navigate('/ProjectList');
   }
 
   function handleTaskChange(event) {
@@ -24,8 +29,11 @@ export default function OpenProject() {
 
   function handleAddTasks(event, id) {
     event.preventDefault();
-    // dispatch(projectCreationActions.addTasksDetails({ id, tasks }));
-    dispatch(addTasksAPI({ projectDetailsDel, id, tasks }));
+
+    if(tasks.length !== 0)
+    {
+      dispatch(addTasksAPI({ projectDetails, id, tasks }));
+    }
 
     setTasks("");
   }

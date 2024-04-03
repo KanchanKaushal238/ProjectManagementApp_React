@@ -60,7 +60,7 @@ namespace ReactProjectManagementAppWebAPI.Controllers
         /// <summary>Puts the specified identifier.</summary>
         /// <param name="id">The identifier.</param>
         /// <param name="value">The value.</param>
-        [HttpPut("{id}")]
+        [HttpPut("UpdateProject/{id}")]
         public async Task<object> UpdateProject(string id, [FromBody] ProjectDTO projectDetails)
         {
             return await _homeService.UpdateProject(id, new Projects()
@@ -75,7 +75,7 @@ namespace ReactProjectManagementAppWebAPI.Controllers
 
         /// <summary>Deletes the specified identifier.</summary>
         /// <param name="id">The identifier.</param>
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteProject/{id}")]
         public async Task<object> DeleteProject(string id)
         {
             return await _homeService.DeleteProject(id);

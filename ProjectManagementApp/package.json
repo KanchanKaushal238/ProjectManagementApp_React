@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.2",
+    "connected-react-router": "^6.9.3",
     "history": "^5.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -18,8 +19,12 @@
     "react-router": "^6.22.3",
     "react-router-redux": "^4.0.8",
     "react-toastify": "^8.2.0",
+    "react-transition-group": "^4.4.5",
     "redux": "^5.0.1",
-    "redux-form": "^8.3.10"
+    "redux-first-router": "^2.1.5",
+    "redux-first-router-link": "^2.1.1",
+    "redux-form": "^8.3.10",
+    "redux-thunk": "^3.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

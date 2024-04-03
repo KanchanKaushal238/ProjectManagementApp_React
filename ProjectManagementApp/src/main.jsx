@@ -2,39 +2,40 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import AddProject from "./components/AddProject.jsx";
-import { Provider } from "react-redux";
-import store from "./store/index.js";
+import { Provider, connect } from "react-redux";
+import {store, history}  from "./store/index.js";
+import { BrowserRouter } from "react-router-dom";
+import { ConnectedRouter } from "connected-react-router";
 import Sidebar from "./components/Sidebar.jsx";
-import Home from "./components/Home.jsx";
-import OpenProject from "./components/OpenProject.jsx";
-// import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-// import { Router, Route , browserHistory} from 'react-router'
 
-// const router = createBrowserRouter([
-//   {
-//     path: '/Home',
-//     element: <App/>
-//   },
-//   {
-//     path: 'Home/AddProject',
-//     element: <AddProject/>
+const mapStateToProps = state => {
+  return {
+    location: state.location
+  };
+};
 
-//   }
-// ])
-
-// const history = syncHistoryWithStore(browserHistory , store);
-
+const ConnectedApp = connect(mapStateToProps)(App);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
   <Provider store={store}>
-    {/* <Router history = {history}>
-    <Route exact path="/" component={App} >
-      <IndexRoute component={Home}/>
-      <Route path="myProjects" component={OpenProject} />
-    </Route>
-    </Router> */}
+     <BrowserRouter history = {history}> 
+     <Sidebar />
       <App />
+    {/* </ConnectedRouter> */}
+    </BrowserRouter> 
+    {/* <ConnectedRouter history = {history}>
+      <>
+      <Routes>
+        <Route exact path = "/" element={() => (<App />)} />
+        <Route path="/AddProject" exact component={() => (<><h1>test</h1></>)} />
+        <Route render={() => (<div>Miss</div>)} />
+      </Routes>
+      </>
+    </ConnectedRouter> */}
+    {/* <Router> */}
+      {/* <App /> */}
+      {/* </Router> */}
   </Provider>
+  </React.StrictMode>
 );

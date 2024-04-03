@@ -1,23 +1,28 @@
 import ProjectButton from "./ProjectButton";
 import { useDispatch, useSelector } from "react-redux";
-import { projectCreationActions } from "../store";
+import { getProjectsAPI, projectCreationActions } from "../store";
 import ProjectList from "./ProjectList";
+import { useNavigate } from "react-router";
+
+// import { Link } from "react-router-dom";
 
 
 export default function Sidebar() {
   const dispatch = useDispatch();
-
-  const projectList = useSelector(state => state.projectHandle.projectArrayItems);
+  const navigate = useNavigate();
 
   const openProjectList = useSelector(state => state.projectHandle.openProjectList);
 
   function addNewProject()
   {
     dispatch(projectCreationActions.addNewProject());
+    navigate('addProject');
   }
 
   function handleProjectList(){
-    dispatch(projectCreationActions.getProjectList());
+    dispatch(getProjectsAPI());
+
+    navigate('ProjectList');
   }
   
   return (
@@ -44,12 +49,13 @@ export default function Sidebar() {
 
             <li>
 
-              <button onClick={handleProjectList} className="flex text-gray-200 items-center m-2 p-2 rounded-lg">
+              <button onClick={handleProjectList} 
+              className="flex text-gray-200 items-center m-2 p-2 rounded-lg">
                 My Projects
               </button>
-              {
+              {/* {
                 openProjectList && <ProjectList />
-              }
+              } */}
               {/* {
               projectList.length > 0 && (
                 <ProjectButton /> )} */}

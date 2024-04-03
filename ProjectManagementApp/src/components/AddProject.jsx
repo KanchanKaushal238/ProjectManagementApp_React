@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTasksAPI, addProjectsAPI, projectCreationActions } from "../store";
 import OpenProject from "./OpenProject";
-
+import { Link, useNavigate } from "react-router-dom";
 
 let projectDetails = {
   id: "",
@@ -11,19 +11,17 @@ let projectDetails = {
   dueDate: "",
 };
 
-
-
 export default function AddProject() {
   const isOpenProj = useSelector((state) => state.projectHandle.isOpenProj);
 
   const [formData, setformData] = useState(projectDetails);
 
+  const navigate =useNavigate();
 
   const inputClass =
     "rounded-sm focus:outline-none border-x-0 border-t-0 border-b-2 border-gray-800 bg-gray-200 mr-20 my-2 w-11/12 h-30 p-2";
-  
-  const labelClass = "font-bold text-gray-700 mt-10";
 
+  const labelClass = "font-bold text-gray-700 mt-10";
 
   const dispatch = useDispatch();
 
@@ -32,8 +30,11 @@ export default function AddProject() {
   };
 
   function handleFormSubmit(event) {
+    debugger;
     event.preventDefault();
-    dispatch(addProjectsAPI({formData}));
+    dispatch(addProjectsAPI({ formData }));
+
+    navigate('..');
   }
 
   function handleInputChange(event) {
@@ -42,12 +43,10 @@ export default function AddProject() {
     setformData((prevFormData) => {
       return {
         ...prevFormData,
-        [name]: value
+        [name]: value,
       };
     });
   }
-
-
 
   return (
     <>
@@ -57,13 +56,22 @@ export default function AddProject() {
             {/* if the project is in new state */}
 
             <>
-              <button
+              <Link to="..">
+                <button
+                  type="button"
+                  onClick={projectCancel}
+                  className="text-gray-800 font-bold hover:text-white mt-5 px-5 py-3 rounded-md hover:bg-black dark:hover:bg-gray-700"
+                >
+                  Cancel
+                </button>
+              </Link>
+              {/* <button
                 type="button"
                 onClick={projectCancel}
                 className="text-gray-800 font-bold hover:text-white mt-5 px-5 py-3 rounded-md hover:bg-black dark:hover:bg-gray-700"
               >
                 Cancel
-              </button>
+              </button> */}
               &nbsp;
               <button
                 type="submit"
@@ -119,9 +127,7 @@ export default function AddProject() {
         </form>
       )}
       {/* if the project is in open state */}
-      {isOpenProj && (
-          <OpenProject />
-      )}
+      {isOpenProj && <OpenProject />}
     </>
   );
 }
