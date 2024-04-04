@@ -1,0 +1,80 @@
+<div class="row flex">
+    <form [formGroup]="createProjectFormGroup" class="w-1/3 border-2 border-blue-900 rounded-3xl px-6 py-6">
+        <h1 class="text-blue-900 font-bold text-4xl text-center mb-9">Create Project</h1>
+        <div class="col-6 mb-6">
+            <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                [ngClass]="isCreating && createProjformGroupControl['title'].errors?.['required'] ? 
+                    'text-red-700 dark:text-red-500' : 'text-gray-900 dark:text-white'">
+                Title
+            </label>
+            <input formControlName="title" type="text" id="title" 
+                [ngClass]="isCreating && createProjformGroupControl['title'].errors?.['required'] ? 
+                    'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500' 
+                    : 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'"
+                placeholder="Title">
+
+            <!-- <p class="mt-2 text-sm text-green-600 dark:text-green-500">
+                <span class="font-medium">Well done!</span>
+                Some success message.
+            </p> -->
+
+            <p *ngIf="isCreating && createProjformGroupControl['title']?.errors?.['required']" 
+                class="mt-2 text-sm text-red-600 dark:text-red-500">
+                <span class="font-medium">title is required</span>
+                <!-- Some error message. -->
+            </p>
+
+            <!-- <label for="success" class="block mb-2 text-sm font-medium text-green-700 dark:text-green-500">
+                Your name
+            </label>
+            <input type="text" id="success"
+                class="bg-green-50 border border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 
+                    dark:placeholder-green-500 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block 
+                    w-full p-2.5 dark:bg-gray-700 dark:border-green-500" placeholder="Success input">
+            <p class="mt-2 text-sm text-green-600 dark:text-green-500">
+                <span class="font-medium">Well done!</span>
+                Some success message.
+            </p> -->
+
+            <!-- <label for="error" class="block mb-2 text-sm font-medium text-red-700 dark:text-red-500">Your name</label>
+            <input type="text" id="error"
+                class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 
+                    dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 
+                    dark:border-red-500" placeholder="Error input">
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">
+                <span class="font-medium">Oh, snapp!</span>
+                Some error message.
+            </p> -->
+
+        </div>
+        <div class="col-6 mb-6">
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Description
+            </label>
+            <textarea formControlName="description" id="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border 
+                border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
+                dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Description"></textarea>
+        </div>
+        <div class="col-6 mb-6">
+            <label for="duedate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                Due Date
+            </label>
+            <input type="date" formControlName="dueDate" id="duedate" placeholder="Select date" [min]="currentDate"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                    focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        </div>
+        <div class="col-6 text-center">
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 
+                font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 
+                focus:outline-none dark:focus:ring-blue-800" (click)="create()">Create
+            </button>
+            <button type="button" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none 
+                bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 
+                focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 
+                dark:hover:text-white dark:hover:bg-gray-700" (click)="cancel()">Cancel
+            </button>
+        </div>
+    </form>
+</div>
